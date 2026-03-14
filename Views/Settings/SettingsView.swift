@@ -208,7 +208,13 @@ struct NetworkSettingsPanel: View {
                     Text("Auto").tag("Auto"); Text("B/s").tag("B/s"); Text("KB/s").tag("KB/s"); Text("MB/s").tag("MB/s")
                 }
                 Picker("Interface:", selection: $iface) {
-                    Text("Auto").tag("Auto"); Text("en0").tag("en0"); Text("en1").tag("en1")
+                    Text("Auto").tag("Auto")
+                    ForEach(networkInterfaces(), id: \.self) { Text($0).tag($0) }
+                }
+                .onAppear {
+                    // Reset invalid stored value so Picker never has an unmatched selection
+                    let valid = ["Auto"] + networkInterfaces()
+                    if !valid.contains(iface) { iface = "Auto" }
                 }
             }
             Section("iPhone Push (via Pushover)") {
@@ -318,4 +324,24 @@ struct AboutPanel: View {
 // MARK: - Helpers
 private func labelHead(_ title: String, icon: String) -> some View {
     Label(title, systemImage: icon).font(.title2.bold()).padding(.top, 4).padding(.bottom, 8)
+}
+
+private func networkInterfaces() -> [String] {
+    var names: [String] = []
+    var ifaddr: UnsafeMutablePointer<ifaddrs>?
+    guard getifaddrs(&ifaddr) == 0, let first = ifaddr else { return names }
+    var ptr = first
+    while true {
+        let name = String(cString: ptr.pointee.ifa_name)
+        let flags = Int32(ptr.pointee.ifa_flags)
+        let isLoopback = (flags & IFF_LOOPBACK) != 0
+        let isUp = (flags & IFF_UP) != 0
+        let isPointToPoint = (flags & IFF_POINTOPOINT) != 0
+        if isUp && !isLoopback && !isPointToPoint && !names.contains(name) {
+            names.append(name)
+        }
+        if let next = ptr.pointee.ifa_next { ptr = next } else { break }
+    }
+    freeifaddrs(ifaddr)
+    return names.sorted()
 }
