@@ -51,7 +51,10 @@ Built entirely on Apple frameworks — no third-party dependencies.
 
 1. Download [`PulseBar.zip`](https://github.com/Exitze/PulseBar/releases/download/v1.0.0/PulseBar.zip) from the latest release
 2. Unzip and move `PulseBar.app` to `/Applications`
-3. Right-click → **Open** → **Open** on first launch (Gatekeeper warning — unsigned build)
+3. **First launch only** — macOS will show a warning: *"PulseBar cannot be opened because the developer cannot be verified."*  
+   This is normal for open-source apps not signed with a paid Apple certificate.  
+   To open: right-click `PulseBar.app` → **Open** → **Open**  
+   Alternatively: **System Settings → Privacy & Security** → scroll down → **Open Anyway**
 
 **Build from source**
 
@@ -138,7 +141,10 @@ PulseBar — лёгкий монитор системы с открытым ис
 
 1. Скачайте [`PulseBar.zip`](https://github.com/Exitze/PulseBar/releases/download/v1.0.0/PulseBar.zip) из последнего релиза
 2. Распакуйте и перенесите `PulseBar.app` в `/Applications`
-3. При первом запуске: правая кнопка → **Открыть** → **Открыть** (предупреждение Gatekeeper — сборка без подписи)
+3. **Только при первом запуске** — macOS покажет предупреждение: *«Приложение PulseBar нельзя открыть, так как не удалось проверить разработчика»*  
+   Это нормально для open-source приложений без платного сертификата Apple.  
+   Как открыть: правая кнопка мыши на `PulseBar.app` → **Открыть** → **Открыть**  
+   Или: **Системные настройки → Конфиденциальность и безопасность** → пролистать вниз → **Всё равно открыть**
 
 **Собрать из исходников**
 
