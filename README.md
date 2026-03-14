@@ -24,7 +24,6 @@ Built entirely on Apple frameworks — no third-party dependencies.
 
 ### Features
 
-**Free**
 - CPU & GPU usage with temperature (multi-key SMC support for Apple Silicon)
 - Per-core load heatmap
 - RAM breakdown: used, wired, compressed
@@ -34,8 +33,6 @@ Built entirely on Apple frameworks — no third-party dependencies.
 - Live sparkline graphs
 - Individually configurable status items (show/hide, refresh interval)
 - Floating overlay widget
-
-**Pro — $2.99 (one-time)**
 - AI anomaly analysis via Claude API
 - Fullscreen performance dashboard
 - CPU/RAM benchmark with historical comparison
@@ -67,7 +64,7 @@ cd PulseBar
 open PulseBar.xcodeproj
 ```
 
-Press `⌘R` to build and run. All Pro features are unlocked in Debug builds.
+Press `⌘R` to build and run.
 
 ### Architecture
 
@@ -114,7 +111,6 @@ PulseBar — лёгкий монитор системы с открытым ис
 
 ### Возможности
 
-**Бесплатно**
 - Температура и загрузка CPU / GPU (поддержка Apple Silicon через цепочку SMC-ключей)
 - Тепловая карта ядер CPU
 - RAM: используемая, wired, compressed
@@ -124,8 +120,6 @@ PulseBar — лёгкий монитор системы с открытым ис
 - Живые sparkline-графики
 - Независимая настройка каждого модуля (показ/скрытие, интервал обновления)
 - Плавающий виджет поверх окон
-
-**Pro — $2.99 (разово)**
 - AI-анализ аномалий через Claude API
 - Полноэкранный дашборд производительности
 - Бенчмарк CPU/RAM с историей результатов
@@ -157,7 +151,7 @@ cd PulseBar
 open PulseBar.xcodeproj
 ```
 
-Нажмите `⌘R` для сборки. В Debug-сборках все Pro-функции разблокированы.
+Нажмите `⌘R` для сборки.
 
 ### Вклад в проект
 
