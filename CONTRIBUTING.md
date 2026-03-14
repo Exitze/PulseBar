@@ -1,150 +1,213 @@
+<div align="center">
+
 # Contributing to PulseBar
 
-Thank you for your interest in contributing! Every contribution matters. 🎉
+[English](#english) · [Русский](#русский)
+
+</div>
 
 ---
 
-## Ways to Contribute
+## English
 
-| | |
-|--|--|
-| 🐛 | Report bugs via [GitHub Issues](https://github.com/USERNAME/PulseBar/issues/new?template=bug_report.md) |
-| 💡 | Suggest features via [GitHub Issues](https://github.com/USERNAME/PulseBar/issues/new?template=feature_request.md) |
-| 🔧 | Submit Pull Requests |
-| 📖 | Improve documentation |
-| ⭐ | Star the repo (helps others discover it!) |
+### Ways to Contribute
 
----
+- Report bugs via [GitHub Issues](https://github.com/Exitze/PulseBar/issues/new?template=bug_report.md)
+- Suggest features via [GitHub Issues](https://github.com/Exitze/PulseBar/issues/new?template=feature_request.md)
+- Submit pull requests
+- Improve documentation
+- Star the repository
 
-## Development Setup
+### Development Setup
 
 ```bash
-# 1. Fork & clone
-git clone https://github.com/YOUR_USERNAME/PulseBar.git
+git clone https://github.com/Exitze/PulseBar.git
 cd PulseBar
-
-# 2. One-command setup (installs xcodegen, generates .xcodeproj)
 ./scripts/setup.sh
-
-# 3. Open and run
 open PulseBar.xcodeproj
-# Press ⌘R in Xcode
 ```
 
-In **Debug builds**, all Pro features are unlocked automatically — no purchase required.
+All features are unlocked in Debug builds — no purchase required.
 
----
+### Code Style
 
-## Code Style Guide
+**Threading**
 
-### General
-- Follow [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/)
-- Use SwiftUI where possible; AppKit only when required (status items, windows, popovers)
-- Keep files ≤ 300 lines; split into extensions if longer
+All `@Published` mutations must happen on the main thread:
 
-### Threading
 ```swift
-// ✅ Correct — all @Published updates on MainActor
+// Correct
 await MainActor.run { self.cpuData = newData }
-DispatchQueue.main.async { self.someProperty = value }
+DispatchQueue.main.async { self.value = result }
 
-// ❌ Wrong — @Published mutation on background thread
-self.cpuData = newData  // from background queue
+// Wrong — never mutate @Published on a background thread
+self.cpuData = newData
 ```
 
-### Optionals
+**Optionals**
+
 ```swift
-// ✅ Correct
-guard let value = optionalValue else { return }
+// Correct
+guard let value = optional else { return }
 let result = optional ?? defaultValue
 
-// ❌ Wrong
-let value = optional!  // never force-unwrap
+// Wrong
+let value = optional!
 ```
 
-### IOKit
+**IOKit**
+
 ```swift
-// ✅ Always guard + defer release
+// Always guard + defer release
 let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"))
 guard service != IO_OBJECT_NULL else { return }
 defer { IOObjectRelease(service) }
 ```
 
-### Comments
-- Use `// MARK: - Section Name` to organize long files
+**File organization**
+
+- Use `// MARK: - Section Name` to organize files longer than 100 lines
 - Document public APIs with `///` doc comments
-- Mark bug fixes: `// FIXED: brief description`
+- Keep files under 300 lines where possible
 
----
+### Pull Request Process
 
-## Pull Request Process
-
-1. **Fork** the repo + create a feature branch:
+1. Fork the repository and create a branch:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feature/your-feature
    # or
-   git checkout -b fix/bug-description
+   git checkout -b fix/issue-description
    ```
+2. Make your changes following the style guide above
+3. Verify the build passes with zero errors: `./scripts/build.sh`
+4. Update `CHANGELOG.md` under `[Unreleased]`
+5. Open a pull request against `main`
 
-2. **Make your changes** following the style guide above
-
-3. **Verify the build passes**:
-   ```bash
-   ./scripts/build.sh
-   ```
-
-4. **Update `CHANGELOG.md`** under `[Unreleased]` with your change
-
-5. **Open a PR** against `main` — fill in the PR template
-
----
-
-## Commit Message Format
+### Commit Message Format
 
 ```
-type: short description (max 72 chars)
-
-Optional longer body explaining WHY (not what).
+type: short description
 ```
 
-| Type | When to use |
-|------|-------------|
-| `feat` | New feature or enhancement |
+| Type | When |
+|------|------|
+| `feat` | New feature |
 | `fix` | Bug fix |
 | `docs` | Documentation only |
-| `style` | Formatting, no logic change |
-| `refactor` | Code restructure, no behavior change |
-| `test` | Test additions |
-| `chore` | Build scripts, CI, dependencies |
+| `refactor` | Code change with no behavior change |
+| `chore` | Build, CI, tooling |
 
-**Examples:**
+Examples:
 ```
-feat: add fan speed animation with RPM display
-fix: CPU temperature reading on M3 chips (add TCXC SMC key)
-docs: add Pushover setup instructions to api-keys.md
+feat: add fan speed animation
+fix: CPU temperature on M3 chips (add TCXC SMC key)
+docs: update Pushover setup guide
 ```
 
----
-
-## Bug Reports
+### Reporting Bugs
 
 Include in your report:
-- macOS version (System Settings → General → About)
-- Mac model and chip (e.g. MacBook Pro M3 14", Apple M3)
-- PulseBar version (About panel in Settings)
+- macOS version
+- Mac model and chip (e.g. MacBook Pro M3 14")
+- PulseBar version (Settings → About)
 - Steps to reproduce
-- Expected vs actual behavior
-- Console logs: open `Console.app`, filter by "PulseBar", copy relevant lines
+- Console logs from Console.app filtered by "PulseBar"
+
+### License
+
+By contributing, you agree your changes will be licensed under the [MIT License](LICENSE).
 
 ---
 
-## Feature Requests
+## Русский
 
-Please check [existing issues](https://github.com/USERNAME/PulseBar/issues) first.  
-Describe: **who** benefits, **what** they'd do, **why** it matters.
+### Как внести вклад
 
----
+- Сообщить об ошибке через [GitHub Issues](https://github.com/Exitze/PulseBar/issues/new?template=bug_report.md)
+- Предложить функцию через [GitHub Issues](https://github.com/Exitze/PulseBar/issues/new?template=feature_request.md)
+- Отправить pull request
+- Улучшить документацию
+- Поставить звезду репозиторию
 
-## License
+### Настройка среды разработки
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+```bash
+git clone https://github.com/Exitze/PulseBar.git
+cd PulseBar
+./scripts/setup.sh
+open PulseBar.xcodeproj
+```
+
+В Debug-сборках все функции разблокированы — покупка не требуется.
+
+### Стиль кода
+
+**Потоки**
+
+Все изменения `@Published`-свойств только на главном потоке:
+
+```swift
+// Правильно
+await MainActor.run { self.cpuData = newData }
+DispatchQueue.main.async { self.value = result }
+
+// Неправильно
+self.cpuData = newData  // из фонового потока
+```
+
+**Опционалы**
+
+```swift
+// Правильно
+guard let value = optional else { return }
+let result = optional ?? defaultValue
+
+// Неправильно
+let value = optional!
+```
+
+**IOKit**
+
+```swift
+let service = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("AppleSMC"))
+guard service != IO_OBJECT_NULL else { return }
+defer { IOObjectRelease(service) }
+```
+
+### Процесс pull request
+
+1. Форкните репозиторий и создайте ветку:
+   ```bash
+   git checkout -b feature/название-функции
+   ```
+2. Внесите изменения согласно стилю выше
+3. Проверьте сборку: `./scripts/build.sh` — должно быть 0 ошибок
+4. Обновите `CHANGELOG.md` в разделе `[Не выпущено]`
+5. Откройте pull request в ветку `main`
+
+### Формат сообщений коммитов
+
+```
+тип: краткое описание
+```
+
+| Тип | Когда использовать |
+|-----|-------------------|
+| `feat` | Новая функція |
+| `fix` | Исправление бага |
+| `docs` | Только документация |
+| `refactor` | Рефакторинг без изменения поведения |
+| `chore` | Сборка, CI, инструменты |
+
+### Отчёт об ошибке
+
+Укажите в сообщении:
+- Версию macOS
+- Модель и чип Mac (например, MacBook Pro M3 14")
+- Версию PulseBar (Настройки → About)
+- Шаги воспроизведения
+- Логи из Console.app с фильтром "PulseBar"
+
+### Лицензия
+
+Внося вклад, вы соглашаетесь с условиями [MIT License](LICENSE).

@@ -1,63 +1,107 @@
+<div align="center">
+
 # Security Policy
 
-## Supported Versions
+[English](#english) · [Русский](#русский)
 
-| Version | Supported          |
-|---------|--------------------|
-| 1.x.x   | ✅ Active support  |
+</div>
 
 ---
 
-## Reporting a Vulnerability
+## English
 
-> **Do NOT open a public GitHub issue for security vulnerabilities.**
+### Supported Versions
 
-Use one of these private channels:
+| Version | Supported |
+|---------|-----------|
+| 1.x.x   | Yes       |
 
-- **GitHub Security Advisory**: Repository → Security → Advisories → New draft advisory *(preferred)*
-- **Email**: security@pulsebar.app
+### Reporting a Vulnerability
 
-### Please include:
+Do not open a public GitHub issue for security vulnerabilities.
+
+**Preferred channel**: [GitHub Security Advisories](https://github.com/Exitze/PulseBar/security/advisories/new)
+
+Include in your report:
 - Description of the vulnerability
 - Steps to reproduce
-- Potential impact assessment
-- Suggested fix (optional but appreciated)
+- Potential impact
+- Suggested fix (optional)
 
-### Response commitment:
-- Acknowledgement within **48 hours**
-- Status update within **72 hours**
-- Patch released within **7 days** for critical issues
+**Response timeline**: acknowledgement within 48 hours, patch within 7 days for critical issues.
+
+### Security Design
+
+**API keys and credentials**
+
+All sensitive credentials are stored in the macOS Keychain via `Security.framework`. Nothing sensitive is written to disk, UserDefaults, or log files.
+
+| Credential | Storage |
+|------------|---------|
+| Claude API key | macOS Keychain |
+| Pushover User Key | UserDefaults (non-sensitive identifier) |
+| Pushover App Token | UserDefaults (non-sensitive identifier) |
+
+**Data privacy**
+
+PulseBar does not collect telemetry, analytics, or crash reports. No data leaves your machine except:
+
+| Feature | Data sent | Trigger |
+|---------|-----------|---------|
+| AI Analysis | CPU/RAM/process snapshot | User-initiated |
+| Push notifications | Alert title and body | Threshold crossed |
+| Ping check | HTTPS HEAD to captive.apple.com | Every N seconds |
+
+**System access**
+
+The app runs unsandboxed — required for IOKit SMC reads and process monitoring. No private APIs are used. Process termination uses `SIGTERM` only (graceful quit).
 
 ---
 
-## Security Design Notes
+## Русский
 
-### API Keys & Credentials
-- All API keys (Claude/Anthropic) stored in **macOS Keychain** via `Security.framework`
-- Never stored in `UserDefaults`, plist, or any file on disk
-- Pushover credentials stored in `UserDefaults` (non-sensitive identifiers only)
+### Поддерживаемые версии
 
-### Data Privacy
-- **No telemetry** — PulseBar never phones home
-- **No analytics** — no crash reporters, no usage tracking
-- **No account required** — no sign-in, no cloud sync
+| Версия | Поддержка |
+|--------|-----------|
+| 1.x.x  | Да        |
 
-### Network Access
-Data leaving your Mac is strictly opt-in:
+### Сообщить об уязвимости
 
-| Feature | Data sent | When |
-|---------|-----------|------|
-| AI Analysis | CPU/RAM/process metrics snapshot | When user taps "Analyze" |
-| Push notifications | Alert title + body | When alert threshold crossed |
-| Ping check | HTTPS HEAD to captive.apple.com | Every N seconds |
+Не открывайте публичный GitHub Issue для уязвимостей безопасности.
 
-### Entitlements
-The app runs **unsandboxed** (required for IOKit SMC access and process monitoring).  
-No `com.apple.security.app-sandbox` entitlement is claimed.
+**Предпочтительный канал**: [GitHub Security Advisories](https://github.com/Exitze/PulseBar/security/advisories/new)
 
-### IOKit Access
-SMC reads use `IOServiceOpen` with `kIOMainPortDefault` — standard public API.  
-No private API usage.
+Укажите в сообщении:
+- Описание уязвимости
+- Шаги воспроизведения
+- Потенциальное воздействие
+- Предлагаемое исправление (необязательно)
 
-### Process Kill
-`SIGTERM` only (graceful quit). Never `SIGKILL`. Auto-kill rules require explicit user configuration.
+**Сроки ответа**: подтверждение в течение 48 часов, патч в течение 7 дней для критических проблем.
+
+### Архитектура безопасности
+
+**API-ключи и учётные данные**
+
+Все чувствительные данные хранятся в macOS Keychain через `Security.framework`. Ничего чувствительного не записывается на диск, в UserDefaults или в лог-файлы.
+
+| Данные | Хранилище |
+|--------|-----------|
+| Ключ Claude API | macOS Keychain |
+| Pushover User Key | UserDefaults (публичный идентификатор) |
+| Pushover App Token | UserDefaults (публичный идентификатор) |
+
+**Конфиденциальность данных**
+
+PulseBar не собирает телеметрию, аналитику или отчёты о сбоях. Данные не покидают ваш Mac, кроме:
+
+| Функция | Передаваемые данные | Когда |
+|---------|--------------------|----|
+| AI-анализ | Снимок CPU/RAM/процессов | По инициативе пользователя |
+| Push-уведомления | Заголовок и текст алерта | При превышении порога |
+| Проверка пинга | HTTPS HEAD на captive.apple.com | Каждые N секунд |
+
+**Системный доступ**
+
+Приложение работает без песочницы — это необходимо для чтения SMC через IOKit и мониторинга процессов. Приватные API не используются. Завершение процессов — только через `SIGTERM` (мягкое завершение).
