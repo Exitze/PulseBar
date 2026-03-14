@@ -11,10 +11,8 @@ class StoreService: ObservableObject {
     @Published var purchasedProductIDs: Set<String> = []
     @Published var isStoreAvailable: Bool = true
 
-    var isPro: Bool {
-        isProOriginal ||
-        UserDefaults.standard.bool(forKey: "isProUnlocked")
-    }
+    // All features are free — Pro gate removed
+    var isPro: Bool { true }
 
     private let productIDs: [String] = ["com.pulsebar.pro"]
     private var updates: Task<Void, Never>? = nil

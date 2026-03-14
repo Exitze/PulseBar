@@ -306,8 +306,10 @@ struct AboutPanel: View {
             Image(systemName: "chart.bar.fill").font(.system(size: 64)).foregroundColor(.accentColor)
             Text("PulseBar").font(.title.bold())
             Text("Version 1.0.0").foregroundColor(.secondary)
-            Text("Made with ❤️ for macOS").foregroundColor(.secondary)
-            Button("View on GitHub") { NSWorkspace.shared.open(URL(string:"https://github.com")!) }
+            Text("Free & Open Source").foregroundColor(.secondary)
+            Button("View on GitHub") {
+                NSWorkspace.shared.open(URL(string: "https://github.com/Exitze/PulseBar")!)
+            }
             Spacer()
         }.frame(maxWidth: .infinity).padding()
     }
