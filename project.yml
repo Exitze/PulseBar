@@ -1,0 +1,44 @@
+name: PulseBar
+options:
+  bundleIdPrefix: com.danyaczhan
+  deploymentTarget:
+    macOS: "13.0"
+  defaultConfig: Debug
+
+configs:
+  Debug: debug
+  Release: release
+
+settings:
+  base:
+    PRODUCT_NAME: PulseBar
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+    ENABLE_HARDENED_RUNTIME: YES
+
+targets:
+  PulseBar:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+      - path: Models
+      - path: Services
+      - path: Views
+      - path: Helpers
+      - path: Intents
+      - path: Resources
+        type: folder
+        excludes:
+          - "**/*.storekit"
+    resources:
+      - path: Resources/Products.storekit
+    settings:
+      base:
+        INFOPLIST_FILE: PulseBar-Info.plist
+        CODE_SIGN_ENTITLEMENTS: PulseBar.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: com.danyaczhan.pulsebar
+    entitlements:
+      path: PulseBar.entitlements

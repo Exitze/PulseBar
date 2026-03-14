@@ -1,0 +1,25 @@
+{
+  "identifier" : "87d82ece-c8d8-4fbd-9cce-a576c5f9c8e2",
+  "nonConsumableProducts" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "3f9eb3d6-5be7-4e50-8c65-f4ab5c9d7e3a",
+      "localizations" : [
+        {
+          "description" : "Unlock all PRO features: GPU Monitor, Process Inspector, Thermal History charts, Smart Alerts, and menu bar customization. One-time purchase, no subscription.",
+          "displayName" : "PulseBar Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.pulsebar.pro",
+      "referenceName" : "PulseBar Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0,
+    "patch" : 0
+  }
+}

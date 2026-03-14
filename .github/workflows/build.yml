@@ -1,0 +1,74 @@
+name: Build & Verify
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build (macOS)
+    runs-on: macos-14       # Apple Silicon runner — Xcode 15 pre-installed
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 15
+        run: |
+          sudo xcode-select -s /Applications/Xcode_15.4.app 2>/dev/null || \
+          sudo xcode-select -s /Applications/Xcode.app
+          xcodebuild -version
+
+      - name: Install xcodegen
+        run: |
+          if ! command -v xcodegen &>/dev/null; then
+            brew install xcodegen
+          fi
+          xcodegen --version
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build (Debug)
+        run: |
+          xcodebuild \
+            -project PulseBar.xcodeproj \
+            -scheme PulseBar \
+            -configuration Debug \
+            -destination "platform=macOS" \
+            build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee /tmp/build.log | \
+            grep -E "error:|warning:|BUILD SUCCEEDED|BUILD FAILED"
+
+      - name: Assert success
+        run: |
+          if grep -q "BUILD SUCCEEDED" /tmp/build.log; then
+            echo "✅ BUILD SUCCEEDED"
+          elif grep -q "BUILD FAILED" /tmp/build.log; then
+            echo "❌ BUILD FAILED"
+            grep "error:" /tmp/build.log
+            exit 1
+          else
+            echo "⚠️ Could not determine build status"
+            exit 1
+          fi
+
+      - name: Check for errors in log
+        run: |
+          ERROR_COUNT=$(grep -c "error:" /tmp/build.log || true)
+          echo "Error count: $ERROR_COUNT"
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "Errors found:"
+            grep "error:" /tmp/build.log
+            exit 1
+          fi
+          echo "✅ Zero errors"
